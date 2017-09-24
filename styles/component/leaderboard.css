@@ -1,0 +1,13 @@
+.board{
+  color:white;
+  margin-top: 2em;
+}
+
+.board-head{
+  background-color: black;
+  border-bottom: 1px solid black;
+}
+
+.link-color{
+  color:#E64A19;
+}

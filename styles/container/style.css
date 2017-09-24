@@ -1,0 +1,13 @@
+body{
+  background-color: #263238;
+}
+
+.container{
+  width:100%;
+  margin:0 auto;
+}
+
+.container h2{
+  margin-top: 1em;
+  color:#42A5F5;
+}

@@ -25,8 +25,12 @@ module: {
     { test: /\.(png|jpg|jpeg|gif|svg)$/, loader: 'file?name=[name].[ext]' ,enforce:'post'},
       { test: /\.(woff|woff2|ttf|eot)$/, loader: 'file?name=[name].[ext]'  ,enforce:'post'},
       { test: /\.html$/, loader: "file?name=[name].[ext]"  ,enforce:'post'},
-      { test: /\.css$/,
-        loader: 'style!css'  ,enforce:'post'},
+      {
+      test: /\.css$/,
+      use: [
+          'style-loader',
+          'css-loader'
+      ]},
       { test: /\.(js|jsx)$/, exclude: /node_modules/, use: [
         {
             // Babel を利用する
