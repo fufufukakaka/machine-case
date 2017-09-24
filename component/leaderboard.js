@@ -43,7 +43,7 @@ class Leaderboard extends React.Component {
               <td>0.95</td>
               <td>0.93</td>
               <td onClick={this.toggle} className='link-color'>confusion matrix</td>
-              <td>3</td>
+              <td className='link-color2'>3</td>
             </tr>
             <tr>
               <th scope="row">2</th>
@@ -51,7 +51,7 @@ class Leaderboard extends React.Component {
               <td>0.89</td>
               <td>0.87</td>
               <td onClick={this.toggle} className='link-color'>confusion matrix</td>
-              <td>2</td>
+              <td className='link-color2'>2</td>
             </tr>
             <tr>
               <th scope="row">3</th>
@@ -59,7 +59,7 @@ class Leaderboard extends React.Component {
               <td>0.85</td>
               <td>0.82</td>
               <td onClick={this.toggle} className='link-color'>confusion matrix</td>
-              <td>1</td>
+              <td className='link-color2'>1</td>
             </tr>
           </tbody>
         </Table>

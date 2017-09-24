@@ -3,11 +3,24 @@
   margin-top: 2em;
 }
 
+.table td{
+  border-top: none!important;
+}
+
+.table th{
+  border-top: none!important;
+}
+
 .board-head{
   background-color: black;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid black!important;
+  color:#9E9E9E;
 }
 
 .link-color{
   color:#E64A19;
+}
+
+.link-color2{
+  color:#4CAF50;
 }
