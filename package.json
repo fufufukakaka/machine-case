@@ -1,0 +1,36 @@
+{
+  "name": "machine-case",
+  "version": "1.0.0",
+  "description": "leaderboard for your machine learning model tuning",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --hot --inline --progress --colors",
+    "start-python": "webpack --hot --inline --progress --colors",
+    "build": "webpack --progress --colors --hot --inline "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fufufukakaka/machine-case.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fufufukakaka/machine-case/issues"
+  },
+  "homepage": "https://github.com/fufufukakaka/machine-case#readme",
+  "dependencies": {
+    "babel": "^6.23.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "eslint-loader": "^1.9.0",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-hot-loader": "^1.3.1",
+    "react-redux": "^5.0.6",
+    "redux-saga": "^0.15.6",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.8.2",
+    "whatwg-fetch": "^2.0.3"
+  }
+}
