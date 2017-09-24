@@ -7,19 +7,29 @@ import {
   ModalBody,
   ModalFooter
 } from 'reactstrap';
+import ReactMarkdown from 'react-markdown'
 import '../styles/component/leaderboard.css'
 
 class Leaderboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      conf_modal: false,
+      detail_modal: false,
+      detail_source: null
     };
-    this.toggle = this.toggle.bind(this);
+    this.conf_toggle = this.conf_toggle.bind(this);
   }
-  toggle() {
+  conf_toggle() {
     this.setState({
-      modal: !this.state.modal
+      conf_modal: !this.state.conf_modal
+    });
+  }
+  detail_toggle(e, source) {
+    e.preventDefault()
+    this.setState({
+      detail_modal: !this.state.detail_modal,
+      detail_source: source
     });
   }
   renderTableContent() {
@@ -31,7 +41,8 @@ class Leaderboard extends React.Component {
         f1: 0.93,
         auc: 0.92,
         version: 1,
-        rank: 1
+        rank: 1,
+        detail: "# Overview\n2017-09-02 10:21:23\n## Feature\nWord2vecで200次元に埋め込み。wikipediaの学習済みモデルを使用\n## Model\nXgboostを使用\n## holdout\nデータ数が少ないためholdoutを作っていない"
       }, {
         submission_id: 2,
         model: 'Support Vector Machine',
@@ -39,7 +50,8 @@ class Leaderboard extends React.Component {
         f1: 0.89,
         auc: 0.87,
         version: 1,
-        rank: 2
+        rank: 2,
+        detail: "# Overview\n2017-09-02 10:21:23\n## Feature\nWord2vecで200次元に埋め込み。wikipediaの学習済みモデルを使用\n## Model\nSVMを使用\n## holdout\nデータ数が少ないためholdoutを作っていない"
       }, {
         submission_id: 3,
         model: 'Naive Bayes',
@@ -47,7 +59,8 @@ class Leaderboard extends React.Component {
         f1: 0.75,
         auc: 0.75,
         version: 1,
-        rank: 3
+        rank: 3,
+        detail: "# Overview\n2017-09-02 10:21:23\n## Feature\nWord2vecで200次元に埋め込み。wikipediaの学習済みモデルを使用\n## Model\nNaive Bayesを使用\n## holdout\nデータ数が少ないためholdoutを作っていない"
       }
     ]
     let list = []
@@ -62,6 +75,7 @@ class Leaderboard extends React.Component {
     )
   }
   renderRow(info) {
+    const source = info.detail
     return (
       <tr key={info.raw}>
         <th scope="row">{info.rank}</th>
@@ -69,8 +83,8 @@ class Leaderboard extends React.Component {
         <td>{info.recall}</td>
         <td>{info.f1}</td>
         <td>{info.auc}</td>
-        <td onClick={this.toggle} className='link-color'>confusion matrix</td>
-        <td className='link-color2'>{info.version}</td>
+        <td onClick={this.conf_toggle} className='link-color'>confusion matrix</td>
+        <td className='link-color2' onClick={(event) => this.detail_toggle(event, source)}>{info.version}</td>
       </tr>
     )
   }
@@ -91,8 +105,9 @@ class Leaderboard extends React.Component {
           </thead>
           {this.renderTableContent()}
         </Table>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>Confusion Matrix(Xgboost)</ModalHeader>
+        //TODO Commonize Modal
+        <Modal isOpen={this.state.conf_modal} toggle={this.conf_toggle} className={this.props.className}>
+          <ModalHeader toggle={this.conf_toggle}>Confusion Matrix</ModalHeader>
           <ModalBody>
             <Table hover>
               <thead>
@@ -117,7 +132,16 @@ class Leaderboard extends React.Component {
             </Table>
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={this.toggle}>Close</Button>
+            <Button color="secondary" onClick={this.conf_toggle}>Close</Button>
+          </ModalFooter>
+        </Modal>
+        <Modal isOpen={this.state.detail_modal} toggle={(event) => this.detail_toggle(event, null)} className={this.props.className}>
+          <ModalHeader toggle={(event) => this.detail_toggle(event, null)}>Submission Detail</ModalHeader>
+          <ModalBody>
+            <ReactMarkdown source={this.state.detail_source}/>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={(event) => this.detail_toggle(event, null)}>Close</Button>
           </ModalFooter>
         </Modal>
       </div>
