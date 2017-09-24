@@ -2,10 +2,10 @@ const webpack = require('webpack');
 
 module.exports = {
   context: __dirname + "/src",
+  stats: {colors: true},
   entry: {
    jsx: "./index.js"
   },
-
   output: {
     path: __dirname + "/python-server/static/",
     filename: "bundle.js"
@@ -38,9 +38,6 @@ module: {
             // Babel のオプションを指定する
             options: {
               presets: [
-                // env を指定することで、ES2017 を ES5 に変換。
-                // {modules: false}にしないと import 文が Babel によって CommonJS に変換され、
-                // webpack の Tree Shaking 機能が使えない
                 ['env', {'modules': false}]
               ]
             }
@@ -57,6 +54,12 @@ module: {
   },
   devServer: {
     contentBase: "./src",
-    hot: true
+    hot: true,
+    proxy: {
+      '/machine-case': {
+        target: 'http://0.0.0.0:5000',
+        secure: false
+      }
+    }
 }
 };

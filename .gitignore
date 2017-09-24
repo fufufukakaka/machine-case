@@ -4,3 +4,5 @@ node_modules/
 \.DS_Store
 
 python-server/static/bundle\.js
+
+python-server/database/database\.db-journal
