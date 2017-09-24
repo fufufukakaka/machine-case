@@ -22,6 +22,58 @@ class Leaderboard extends React.Component {
       modal: !this.state.modal
     });
   }
+  renderTableContent() {
+    const sample = [
+      {
+        submission_id: 1,
+        model: 'Xgboost',
+        recall: 0.95,
+        f1: 0.93,
+        auc: 0.92,
+        version: 1,
+        rank: 1
+      }, {
+        submission_id: 2,
+        model: 'Support Vector Machine',
+        recall: 0.89,
+        f1: 0.89,
+        auc: 0.87,
+        version: 1,
+        rank: 2
+      }, {
+        submission_id: 3,
+        model: 'Naive Bayes',
+        recall: 0.80,
+        f1: 0.75,
+        auc: 0.75,
+        version: 1,
+        rank: 3
+      }
+    ]
+    let list = []
+    let element = null
+    for (let i in sample) {
+      const info = sample[i]
+      element = this.renderRow(info)
+      list.push(element)
+    }
+    return (
+      <tbody>{list}</tbody>
+    )
+  }
+  renderRow(info) {
+    return (
+      <tr key={info.raw}>
+        <th scope="row">{info.rank}</th>
+        <td>{info.model}</td>
+        <td>{info.recall}</td>
+        <td>{info.f1}</td>
+        <td>{info.auc}</td>
+        <td onClick={this.toggle} className='link-color'>confusion matrix</td>
+        <td className='link-color2'>{info.version}</td>
+      </tr>
+    )
+  }
   render() {
     return (
       <div>
@@ -32,36 +84,12 @@ class Leaderboard extends React.Component {
               <th>Model Name</th>
               <th>recall-score</th>
               <th>f1-score</th>
+              <th>AUC</th>
               <th>confusion matrix</th>
               <th>version(Detail)</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Xgboost</td>
-              <td>0.95</td>
-              <td>0.93</td>
-              <td onClick={this.toggle} className='link-color'>confusion matrix</td>
-              <td className='link-color2'>3</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Supprt Vector Machine</td>
-              <td>0.89</td>
-              <td>0.87</td>
-              <td onClick={this.toggle} className='link-color'>confusion matrix</td>
-              <td className='link-color2'>2</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Naive Bayes</td>
-              <td>0.85</td>
-              <td>0.82</td>
-              <td onClick={this.toggle} className='link-color'>confusion matrix</td>
-              <td className='link-color2'>1</td>
-            </tr>
-          </tbody>
+          {this.renderTableContent()}
         </Table>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Confusion Matrix(Xgboost)</ModalHeader>

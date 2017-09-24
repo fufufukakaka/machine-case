@@ -7,7 +7,7 @@ leaderboard for your machine learning model tuning
 - [ ] connect sqlite3
 - [ ] python manipulation API(Catch learned model, Submission from python)
 
-# Database
+# Database Definition
 ## consufion_matrix
 ```
 CREATE TABLE "confusion_matrix" ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `submission_id` INTEGER, `row_class` TEXT, `column_class` TEXT, `value` INTEGER )
