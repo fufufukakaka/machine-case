@@ -8,6 +8,7 @@ import {
   ModalFooter
 } from 'reactstrap';
 import ReactMarkdown from 'react-markdown'
+import PropTypes from "prop-types"
 import '../styles/component/leaderboard.css'
 
 class Leaderboard extends React.Component {
@@ -16,7 +17,7 @@ class Leaderboard extends React.Component {
     this.state = {
       conf_modal: false,
       detail_modal: false,
-      detail_source: null
+      detail_source: ""
     };
     this.conf_toggle = this.conf_toggle.bind(this);
   }
@@ -33,40 +34,10 @@ class Leaderboard extends React.Component {
     });
   }
   renderTableContent() {
-    const sample = [
-      {
-        submission_id: 1,
-        model: 'Xgboost',
-        recall: 0.95,
-        f1: 0.93,
-        auc: 0.92,
-        version: 1,
-        rank: 1,
-        detail: "# Overview\n2017-09-02 10:21:23\n## Feature\nWord2vecで200次元に埋め込み。wikipediaの学習済みモデルを使用\n## Model\nXgboostを使用\n## holdout\nデータ数が少ないためholdoutを作っていない"
-      }, {
-        submission_id: 2,
-        model: 'Support Vector Machine',
-        recall: 0.89,
-        f1: 0.89,
-        auc: 0.87,
-        version: 1,
-        rank: 2,
-        detail: "# Overview\n2017-09-02 10:21:23\n## Feature\nWord2vecで200次元に埋め込み。wikipediaの学習済みモデルを使用\n## Model\nSVMを使用\n## holdout\nデータ数が少ないためholdoutを作っていない"
-      }, {
-        submission_id: 3,
-        model: 'Naive Bayes',
-        recall: 0.80,
-        f1: 0.75,
-        auc: 0.75,
-        version: 1,
-        rank: 3,
-        detail: "# Overview\n2017-09-02 10:21:23\n## Feature\nWord2vecで200次元に埋め込み。wikipediaの学習済みモデルを使用\n## Model\nNaive Bayesを使用\n## holdout\nデータ数が少ないためholdoutを作っていない"
-      }
-    ]
     let list = []
     let element = null
-    for (let i in sample) {
-      const info = sample[i]
+    for (let i in this.props.data) {
+      const info = this.props.data[i]
       element = this.renderRow(info)
       list.push(element)
     }
@@ -78,7 +49,7 @@ class Leaderboard extends React.Component {
     const source = info.detail
     return (
       <tr key={info.raw}>
-        <th scope="row">{info.rank}</th>
+        <th scope="row">{info.submission_id}</th>
         <td>{info.model}</td>
         <td>{info.recall}</td>
         <td>{info.f1}</td>
@@ -147,6 +118,12 @@ class Leaderboard extends React.Component {
       </div>
     )
   }
+}
+
+Leaderboard.PropTypes = {
+  data: PropTypes.object,
+  isFetching: PropTypes.bool,
+  isComplete: PropTypes.bool
 }
 
 export default Leaderboard

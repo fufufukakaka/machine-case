@@ -11,7 +11,7 @@ const initial = {
     isFetching: false,
     isComplete:false,
     data: {},
-    focus_submission_id: 1
+    focus_target: null
   }
 }
 
@@ -24,7 +24,7 @@ const leaderboard = createReducer({
     isFetching: false,
     isComplete: false,
     data: payload.data,
-    focus_submission_id : payload.focus_submission_id
+    focus_target : payload.focus_target
   }),
   [fetchInitRequest]: state => Object.assign({}, state, {
     isFetching: true,
@@ -33,7 +33,8 @@ const leaderboard = createReducer({
   [displayInitRequest]: (state,payload) => Object.assign({}, state, {
     isFetching: false,
     isComplete: false,
-    data: payload.data
+    data: payload.data,
+    focus_target : payload.focus_target
   })
 }, initial.leaderboard)
 

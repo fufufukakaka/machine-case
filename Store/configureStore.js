@@ -10,7 +10,7 @@ export default function configureStore(initialState) {
   const sagaMiddleware = createSagaMiddleware()
   const store = createStore(
     combineReducers({
-      form: formReducer
+      leaderboard
     }),
     initialState,
     applyMiddleware(
