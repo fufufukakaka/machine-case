@@ -7,6 +7,7 @@ import {
   DropdownItem,
   DropdownMenu
 } from 'reactstrap'
+import PropTypes from "prop-types"
 
 class Targetselect extends React.Component {
   constructor(props) {
@@ -51,6 +52,10 @@ class Targetselect extends React.Component {
       </div>
     )
   }
+}
+
+Targetselect.PropTypes = {
+  focus_target: PropTypes.string
 }
 
 export default Targetselect

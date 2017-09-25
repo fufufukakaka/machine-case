@@ -38,18 +38,18 @@ class Leaderboard extends React.Component {
     let element = null
     for (let i in this.props.data) {
       const info = this.props.data[i]
-      element = this.renderRow(info)
+      element = this.renderRow(Number(i) + 1, info)
       list.push(element)
     }
     return (
       <tbody>{list}</tbody>
     )
   }
-  renderRow(info) {
+  renderRow(k, info) {
     const source = info.detail
     return (
-      <tr key={info.raw}>
-        <th scope="row">{info.submission_id}</th>
+      <tr key={k}>
+        <th scope="row">{k}</th>
         <td>{info.model}</td>
         <td>{info.recall}</td>
         <td>{info.f1}</td>

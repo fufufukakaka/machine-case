@@ -7,22 +7,50 @@ import sqlite3
 app = Flask(__name__,static_url_path='')
 
 class database:
+    def dict_factory(cursor, row):
+        d = {}
+        for idx, col in enumerate(cursor.description):
+            d[col[0]] = row[idx]
+        return d
+
     def get_connection():
         path = os.path.dirname(os.path.abspath(__file__))
         dbname = path+'/database/database.db'
         conn = sqlite3.connect(dbname)
-        conn.row_factory = sqlite3.Row
+        conn.row_factory = database.dict_factory
         cursor = conn.cursor()
         return conn,cursor
 
     def get_recent(cursor,main_target):
-        sql = "select * from leaderboard where main_target = ?"
+        sql = "select * from leaderboard where main_target = ? order by auc desc;"
         cursor.execute(sql, [main_target])
         res = cursor.fetchall()
         return res
 
+    def get_sub_target(cursor,main_target):
+        sql = "select sub_target from leaderboard where main_target = ?"
+        cursor.execute(sql, [main_target])
+        res = cursor.fetchall()
+        sub_target_list = []
+        for i in res:
+            sub_target_list.append(i["sub_target"])
+        #重複を削除
+        sub_target_list = list(set(sub_target_list))
+        return sub_target_list
+
+    def get_main_target(cursor):
+        sql = "select main_target from leaderboard"
+        cursor.execute(sql)
+        res = cursor.fetchall()
+        main_target_list = []
+        for i in res:
+            main_target_list.append(i["main_target"])
+        #重複を削除
+        main_target_list = list(set(main_target_list))
+        return main_target_list
+
     def get_recent_target(cursor):
-        sql = "SELECT id,main_target from leaderboard ORDER BY id DESC limit 1;"
+        sql = "SELECT id,main_target from leaderboard order by id desc limit 1;"
         cursor.execute(sql)
         res = cursor.fetchone()
         return res
@@ -41,10 +69,11 @@ def return_hello():
 def return_recent():
     connection,cursor = database.get_connection()
     res = database.get_recent_target(cursor)
-    main_target = res[1]
+    main_target = res["main_target"]
     res = database.get_recent(cursor,main_target)
-    print(res)
-    response = jsonify(data=res,focus_target=main_target)
+    main_targets = database.get_main_target(cursor)
+    sub_targets = database.get_sub_target(cursor,main_target)
+    response = jsonify(data=res,focusTarget=main_target,subTargetList=sub_targets,mainTargetList=main_targets)
     response.status_code = 200
     return response
 
