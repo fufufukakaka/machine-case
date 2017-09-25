@@ -5,7 +5,9 @@ import {
   displayRequest,
   fetchInitRequest,
   displayInitRequest,
-  changeMain
+  changeMain,
+  fetchConfusionMatrix,
+  displayConfusionMatrix
 } from "../actions/leaderboard"
 
 export function* handleFetchInitRequest() {
@@ -30,5 +32,18 @@ export function* handleFetchRequest() {
     }
   )
     yield put(displayRequest(Object.assign({}, payload)))
+    }
+}
+
+export function* handleFetchConfusionMatrix() {
+  while (true) {
+    const action = yield take([`${fetchConfusionMatrix}`])
+      const { payload} = yield call(superFetch, {
+        url: "machine-case/getConfusionMatrix",
+        type: "POST",
+        data: action.payload
+    }
+  )
+    yield put(displayConfusionMatrix(Object.assign({}, payload)))
     }
 }

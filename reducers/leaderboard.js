@@ -5,7 +5,9 @@ import {
   fetchInitRequest,
   displayInitRequest,
   changeSub,
-  changeMain
+  changeMain,
+  fetchConfusionMatrix,
+  displayConfusionMatrix
 } from "../actions/leaderboard"
 
 const initial = {
@@ -16,7 +18,9 @@ const initial = {
     subTargetList:[],
     mainTargetList:[],
     focusTarget: null,
-    focusSubTarget: null
+    focusSubTarget: null,
+    class_array: [],
+    value_array:[]
   }
 }
 
@@ -53,6 +57,10 @@ const leaderboard = createReducer({
     focusTarget: payload,
     isFetching: true,
     isComplete: false
+  }),
+  [displayConfusionMatrix]: (state,payload) => Object.assign({}, state, {
+    class_array: payload.class_array,
+    value_array: payload.value_array
   })
 }, initial.leaderboard)
 
