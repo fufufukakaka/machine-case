@@ -36,9 +36,16 @@ class Leaderboard extends React.Component {
   renderTableContent() {
     let list = []
     let element = null
+    let targetData = []
     for (let i in this.props.data) {
       const info = this.props.data[i]
-      element = this.renderRow(Number(i) + 1, info)
+      if (info.sub_target === this.props.focusSubTarget) {
+        targetData.push(info)
+      }
+    }
+    for (let i in targetData) {
+      const info2 = targetData[i]
+      element = this.renderRow(Number(i) + 1, info2)
       list.push(element)
     }
     return (
@@ -122,6 +129,7 @@ class Leaderboard extends React.Component {
 
 Leaderboard.PropTypes = {
   data: PropTypes.object,
+  focusSubTarget: PropTypes.string,
   isFetching: PropTypes.bool,
   isComplete: PropTypes.bool
 }

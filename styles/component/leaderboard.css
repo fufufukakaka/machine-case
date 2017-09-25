@@ -11,6 +11,10 @@
   border-top: none!important;
 }
 
+.table thead th{
+  border-bottom: none!important;
+}
+
 .board-head{
   background-color: black;
   border-bottom: 1px solid black!important;

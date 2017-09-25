@@ -20,8 +20,8 @@ class App extends React.Component {
       <div className='container'>
         <div className="col-md-12 heading-section">
           <h2>Machine-Case</h2>
-          <Targetselect currentTarget={this.props.leaderboard.focusTarget} subTargetList={this.props.leaderboard.subTargetList} mainTargetList={this.props.leaderboard.mainTargetList}/>
-          <Leaderboard data={this.props.leaderboard.data} isFetching={this.props.leaderboard.isFetching} isComplete={this.props.leaderboard.isComplete}/>
+          <Targetselect focusTarget={this.props.leaderboard.focusTarget} focusSubTarget={this.props.leaderboard.focusSubTarget} subTargetList={this.props.leaderboard.subTargetList} mainTargetList={this.props.leaderboard.mainTargetList}/>
+          <Leaderboard focusSubTarget={this.props.leaderboard.focusSubTarget} data={this.props.leaderboard.data} isFetching={this.props.leaderboard.isFetching} isComplete={this.props.leaderboard.isComplete}/>
         </div>
       </div>
     )

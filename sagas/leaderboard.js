@@ -4,7 +4,8 @@ import {
   fetchRequest,
   displayRequest,
   fetchInitRequest,
-  displayInitRequest
+  displayInitRequest,
+  changeMain
 } from "../actions/leaderboard"
 
 export function* handleFetchInitRequest() {
@@ -21,10 +22,10 @@ export function* handleFetchInitRequest() {
 
 export function* handleFetchRequest() {
   while (true) {
-    const action = yield take([`${fetchRequest}`])
+    const action = yield take([`${changeMain}`])
       const { payload} = yield call(superFetch, {
         url: "machine-case/getTarget",
-        type: "GET",
+        type: "POST",
         data: action.payload
     }
   )

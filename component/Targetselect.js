@@ -1,4 +1,5 @@
 import React from "react"
+import {connect} from 'react-redux'
 import {
   Button,
   ButtonGroup,
@@ -8,16 +9,18 @@ import {
   DropdownMenu
 } from 'reactstrap'
 import PropTypes from "prop-types"
+import {changeSub, changeMain} from "../actions/leaderboard"
 
 class Targetselect extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       dropdownOpen1: false,
-      dropdownOpen2: false
+      dropdownOpen2: false,
+      focusMainTarget: "",
+      focusSubTarget: ""
     };
   }
-
   toggle1() {
     this.setState({
       dropdownOpen1: !this.state.dropdownOpen1
@@ -28,26 +31,61 @@ class Targetselect extends React.Component {
       dropdownOpen2: !this.state.dropdownOpen2
     });
   }
+  changeMain(e, target) {
+    e.preventDefault()
+    this.setState({focusMainTarget: target})
+    this.props.dispatch(changeMain({next: target}))
+    this.setState({focusSubTarget: this.props.leaderboard.focusSubTarget})
+  }
+  changeSub(e, target) {
+    e.preventDefault()
+    this.setState({focusSubTarget: target})
+    this.props.dispatch(changeSub(target))
+  }
+  menuRender(main, targetList) {
+    let list = []
+    let element = null
+    if (main) {
+      for (let i in targetList) {
+        element = <DropdownItem key={i} onClick={(event) => this.changeMain(event, targetList[i])}>{targetList[i]}</DropdownItem>
+        list.push(element)
+      }
+    } else {
+      for (let i in targetList) {
+        element = <DropdownItem key={i} onClick={(event) => this.changeSub(event, targetList[i])}>{targetList[i]}</DropdownItem>
+        list.push(element)
+      }
+    }
+    return (
+      <DropdownMenu>
+        {list}
+      </DropdownMenu>
+    )
+  }
   render() {
     return (
       <div>
         <ButtonDropdown isOpen={this.state.dropdownOpen1} toggle={this.toggle1.bind(this)}>
           <DropdownToggle caret>
-            spi-auto-correct
+            {this.state.focusMainTarget
+              ? this.state.focusMainTarget
+              : this.props.leaderboard.focusTarget}
           </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem>spi-auto-correct</DropdownItem>
-            <DropdownItem>fnjudge-evolve</DropdownItem>
-          </DropdownMenu>
+          {this.props.mainTargetList[0]
+            ? this.menuRender(true, this.props.mainTargetList)
+            : <DropdownMenu>
+              None
+            </DropdownMenu>}
         </ButtonDropdown>
         <ButtonDropdown isOpen={this.state.dropdownOpen2} toggle={this.toggle2.bind(this)}>
           <DropdownToggle caret>
-            q1-1(score_avg_1)
+            {this.props.leaderboard.focusSubTarget}
           </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem>q1-1(score_avg_1)</DropdownItem>
-            <DropdownItem>q1-1(score_avg_2)</DropdownItem>
-          </DropdownMenu>
+          {this.props.subTargetList[0]
+            ? this.menuRender(false, this.props.leaderboard.subTargetList)
+            : <DropdownMenu>
+              None
+            </DropdownMenu>}
         </ButtonDropdown>
       </div>
     )
@@ -55,7 +93,16 @@ class Targetselect extends React.Component {
 }
 
 Targetselect.PropTypes = {
-  focus_target: PropTypes.string
+  focusTarget: PropTypes.string,
+  focusSubTarget: PropTypes.string,
+  mainTargetList: PropTypes.array,
+  subTargetList: PropTypes.array,
+  dispatch: PropTypes.func.isRequired,
+  leaderboard: PropTypes.object.isRequired
 }
 
-export default Targetselect
+function select({leaderboard}) {
+  return {leaderboard}
+}
+
+export default connect(select)(Targetselect)

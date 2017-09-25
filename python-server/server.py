@@ -77,5 +77,17 @@ def return_recent():
     response.status_code = 200
     return response
 
+@app.route('/machine-case/getTarget', methods=['POST'])
+def return_target():
+    connection,cursor = database.get_connection()
+    data = request.get_json()
+    main_target = data['next']
+
+    sub_targets = database.get_sub_target(cursor,main_target)
+    res = database.get_recent(cursor,main_target)
+    response = jsonify(data=res,focusTarget=main_target,subTargetList=sub_targets)
+    response.status_code = 200
+    return response
+
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')

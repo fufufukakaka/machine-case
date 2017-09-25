@@ -3,7 +3,9 @@ import {
   fetchRequest,
   displayRequest,
   fetchInitRequest,
-  displayInitRequest
+  displayInitRequest,
+  changeSub,
+  changeMain
 } from "../actions/leaderboard"
 
 const initial = {
@@ -13,22 +15,23 @@ const initial = {
     data: {},
     subTargetList:[],
     mainTargetList:[],
-    focusTarget: null
+    focusTarget: null,
+    focusSubTarget: null
   }
 }
 
 const leaderboard = createReducer({
   [fetchRequest]: state => Object.assign({}, state, {
     isFetching: true,
-    isComplete: true
+    isComplete: false
   }),
   [displayRequest]: (state,payload) => Object.assign({}, state, {
     isFetching: false,
-    isComplete: false,
+    isComplete: true,
     data: payload.data,
     subTargetList:payload.subTargetList,
-    mainTargetList:payload.mainTargetList,
-    focusTarget : payload.focusTarget
+    focusTarget : payload.focusTarget,
+    focusSubTarget : payload.subTargetList[0]
   }),
   [fetchInitRequest]: state => Object.assign({}, state, {
     isFetching: true,
@@ -40,7 +43,16 @@ const leaderboard = createReducer({
     data: payload.data,
     subTargetList:payload.subTargetList,
     mainTargetList:payload.mainTargetList,
-    focusTarget : payload.focusTarget
+    focusTarget : payload.focusTarget,
+    focusSubTarget : payload.subTargetList[0]
+  }),
+  [changeSub]: (state,payload) => Object.assign({}, state, {
+    focusSubTarget: payload
+  }),
+  [changeMain]: (state,payload) => Object.assign({}, state, {
+    focusTarget: payload,
+    isFetching: true,
+    isComplete: false
   })
 }, initial.leaderboard)
 
