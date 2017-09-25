@@ -22,7 +22,7 @@ class database:
         return conn,cursor
 
     def get_recent(cursor,main_target):
-        sql = "select * from leaderboard where main_target = ? order by auc desc;"
+        sql = "select * from leaderboard as l inner join model_detail as m on l.id = m.submission_id where main_target = ? order by auc desc;"
         cursor.execute(sql, [main_target])
         res = cursor.fetchall()
         return res
