@@ -7,6 +7,14 @@
   border-top: none!important;
 }
 
+.table td img{
+  width:80px;
+}
+
+.table tr{
+  text-align: center;
+}
+
 .table th{
   border-top: none!important;
 }

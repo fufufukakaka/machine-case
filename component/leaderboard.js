@@ -64,10 +64,13 @@ class Leaderboard extends React.Component {
   }
   renderRow(k, info) {
     const source = info.detail
+    const imgsrc = "../static/" + info.image_name + ".png"
     return (
       <tr key={k}>
         <th scope="row">{k}</th>
-        <td>{info.model}</td>
+        <td>
+          <img src={imgsrc}/> {info.model}
+        </td>
         <td>{info.recall}</td>
         <td>{info.f1}</td>
         <td>{info.auc}</td>
