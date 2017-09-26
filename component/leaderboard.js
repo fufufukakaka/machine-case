@@ -19,7 +19,7 @@ class Leaderboard extends React.Component {
     this.state = {
       conf_modal: false,
       detail_modal: false,
-      detail_source: ""
+      detail_source: "none"
     };
     this.conf_toggle = this.conf_toggle.bind(this);
   }
@@ -64,12 +64,11 @@ class Leaderboard extends React.Component {
   }
   renderRow(k, info) {
     const source = info.detail
-    const imgsrc = "../static/" + info.image_name + ".png"
     return (
       <tr key={k}>
         <th scope="row">{k}</th>
         <td>
-          <img src={imgsrc}/> {info.model}
+          {info.model}
         </td>
         <td>{info.recall}</td>
         <td>{info.f1}</td>
@@ -145,7 +144,7 @@ class Leaderboard extends React.Component {
           </ModalFooter>
         </Modal>
         <Modal isOpen={this.state.detail_modal} toggle={(event) => this.detail_toggle(event, null)} className={this.props.className}>
-          <ModalHeader toggle={(event) => this.detail_toggle(event, null)}>Submission Detail</ModalHeader>
+          <ModalHeader toggle={(event) => this.detail_toggle(event, "none")}>Submission Detail</ModalHeader>
           <ModalBody>
             <ReactMarkdown source={this.state.detail_source}/>
           </ModalBody>

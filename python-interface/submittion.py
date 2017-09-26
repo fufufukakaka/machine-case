@@ -13,6 +13,5 @@ class Submission(leaderboard,detail,confusion_matrix):
         'http://0.0.0.0:'+port+'/machine-case/update',{'leaderboard':self.leaderboard,'detail':self.detail,'confusion_matrix':self.confusion_matrix}
         )
 
-
 if __name__ == '__main__':
     main()

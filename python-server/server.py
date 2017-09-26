@@ -18,7 +18,7 @@ class database:
     def get_connection():
         path = os.path.dirname(os.path.abspath(__file__))
         dbname = path+'/database/database.db'
-        conn = sqlite3.connect(dbname)
+        conn = sqlite3.connect(dbname,isolation_level='EXCLUSIVE')
         conn.row_factory = database.dict_factory
         cursor = conn.cursor()
         return conn,cursor
@@ -30,7 +30,7 @@ class database:
             param.append(i)
         param.append(createDate)
         res = True
-        insert_sql = 'insert into leaderboard (main_target,sub_target,recall,f1,auc,version,model,image_name,createDate) values (?,?,?,?,?,?,?,?,?)'
+        insert_sql = 'insert into leaderboard (main_target,sub_target,recall,f1,auc,version,model,createDate) values (?,?,?,?,?,?,?,?)'
         try:
             cursor.execute(insert_sql,param)
         except:
@@ -132,12 +132,11 @@ def return_history():
 def return_hello():
     response = jsonify(data="Hello")
     response.status_code = 200
-    conn.close()
     return response
 
 @app.route('/machine-case/getRecent', methods=['GET'])
 def return_recent():
-    connection,cursor = database.get_connection()
+    conn,cursor = database.get_connection()
     res = database.get_recent_target(cursor)
     main_target = res["main_target"]
     res = database.get_recent(cursor,main_target)
@@ -150,7 +149,7 @@ def return_recent():
 
 @app.route('/machine-case/getTarget', methods=['POST'])
 def return_target():
-    connection,cursor = database.get_connection()
+    conn,cursor = database.get_connection()
     data = request.get_json()
     main_target = data['next']
 
@@ -163,7 +162,7 @@ def return_target():
 
 @app.route('/machine-case/getConfusionMatrix',methods=['POST'])
 def return_matrix():
-    connection,cursor = database.get_connection()
+    conn,cursor = database.get_connection()
     data = request.get_json()
     target_id = data['target_id']
     class_array,value_array = database.get_confusion_matrix(cursor,target_id)
@@ -196,6 +195,7 @@ def update_table():
         conn.close()
         message="update completed"
     else:
+        conn.rollback()
         conn.close()
         message="update failed"
     return message
