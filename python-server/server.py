@@ -30,7 +30,7 @@ class database:
             param.append(i)
         param.append(createDate)
         res = True
-        insert_sql = 'insert into leaderboard (main_target,sub_target,recall,f1,auc,version,model,createDate) values (?,?,?,?,?,?,?,?)'
+        insert_sql = 'insert into leaderboard (main_target,sub_target,accuracy,precision,recall,f1,auc,version,model,createDate) values (?,?,?,?,?,?,?,?,?,?)'
         try:
             cursor.execute(insert_sql,param)
         except:

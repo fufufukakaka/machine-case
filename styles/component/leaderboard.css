@@ -3,6 +3,10 @@
   margin-top: 2em;
 }
 
+.detail-button{
+  padding:3px 2rem!important;
+}
+
 .table td{
   border-top: none!important;
 }

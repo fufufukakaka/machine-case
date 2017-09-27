@@ -10,6 +10,7 @@ import {
 } from 'reactstrap'
 import PropTypes from "prop-types"
 import {changeSub, changeMain} from "../actions/leaderboard"
+import '../styles/component/Targetselect.css'
 
 class Targetselect extends React.Component {
   constructor(props) {

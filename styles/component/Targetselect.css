@@ -1,0 +1,10 @@
+.btn-group{
+  margin-right: 1em;
+}
+
+.btn-group > .btn{
+  border: none;
+  color: white;
+  margin-top: 1em;
+  background-color: #01579B;
+}

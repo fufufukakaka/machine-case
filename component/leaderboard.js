@@ -74,7 +74,9 @@ class Leaderboard extends React.Component {
         <td>{info.f1}</td>
         <td>{info.auc}</td>
         <td onClick={(event) => this.conf_toggle_open(event, info.id)} className='link-color'>confusion matrix</td>
-        <td className='link-color2' onClick={(event) => this.detail_toggle(event, source)}>{info.version}</td>
+        <td className='link-color2' onClick={(event) => this.detail_toggle(event, source)}>
+          <Button outline color="primary" className={'detail-button'}>{info.version}</Button>
+        </td>
       </tr>
     )
   }
