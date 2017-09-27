@@ -19,7 +19,9 @@ class Leaderboard extends React.Component {
     this.state = {
       conf_modal: false,
       detail_modal: false,
-      detail_source: "none"
+      detail_source: "none",
+      asc: false,
+      sort: "auc"
     };
     this.conf_toggle = this.conf_toggle.bind(this);
   }
@@ -43,12 +45,38 @@ class Leaderboard extends React.Component {
       detail_source: source
     });
   }
-  renderTableContent() {
+  renderTableContent(state) {
     let list = []
     let element = null
     let targetData = []
-    for (let i in this.props.data) {
-      const info = this.props.data[i]
+    let sortedData = []
+    //sort
+    if (this.props.data[0]) {
+      if (state.asc) {
+        sortedData = this.props.data.sort(function(a, b) {
+          if (a[state.sort] < b[state.sort]) {
+            return -1;
+          }
+          if (a[state.sort] > b[state.sort]) {
+            return 1;
+          }
+          return 0;
+        });
+      } else {
+        sortedData = this.props.data.sort(function(a, b) {
+          if (a[state.sort] < b[state.sort]) {
+            return 1;
+          }
+          if (a[state.sort] > b[state.sort]) {
+            return -1;
+          }
+          return 0;
+        });
+      }
+    }
+
+    for (let i in sortedData) {
+      const info = sortedData[i]
       if (info.sub_target === this.props.focusSubTarget) {
         targetData.push(info)
       }
@@ -70,6 +98,8 @@ class Leaderboard extends React.Component {
         <td>
           {info.model}
         </td>
+        <td>{info.accuracy}</td>
+        <td>{info.precision}</td>
         <td>{info.recall}</td>
         <td>{info.f1}</td>
         <td>{info.auc}</td>
@@ -118,6 +148,33 @@ class Leaderboard extends React.Component {
       </Table>
     )
   }
+  descSort(e, position) {
+    e.preventDefault()
+    this.setState({sort: position, asc: false})
+  }
+  ascSort(e, position) {
+    e.preventDefault()
+    this.setState({sort: position, asc: true})
+  }
+  renderArrow(position, sortState, asc) {
+    return (position === sortState
+      ? asc
+        ? <p>{position}
+            <button className="sortbutton" onClick={(event) => this.descSort(event, position)}>
+              <i className="fa fa-fw fa-angle-up"></i>
+            </button>
+          </p>
+        : <p>{position}
+            <button className="sortbutton" onClick={(event) => this.ascSort(event, position)}>
+              <i className="fa fa-fw fa-angle-down"></i>
+            </button>
+          </p>
+      : <p>{position}
+        <button className="sortbutton" onClick={(event) => this.ascSort(event, position)}>
+          <i className="fa fa-fw fa-angle-down"></i>
+        </button>
+      </p>)
+  }
   render() {
     return (
       <div>
@@ -126,14 +183,21 @@ class Leaderboard extends React.Component {
             <tr>
               <th>rank</th>
               <th>Model Name</th>
-              <th>recall-score</th>
-              <th>f1-score</th>
-              <th>AUC</th>
+              <th>{this.renderArrow("accuracy", this.state.sort, this.state.asc)}
+              </th>
+              <th>{this.renderArrow("precision", this.state.sort, this.state.asc)}
+              </th>
+              <th>{this.renderArrow("recall", this.state.sort, this.state.asc)}
+              </th>
+              <th>{this.renderArrow("f1", this.state.sort, this.state.asc)}
+              </th>
+              <th>{this.renderArrow("auc", this.state.sort, this.state.asc)}
+              </th>
               <th>confusion matrix</th>
               <th>version(Detail)</th>
             </tr>
           </thead>
-          {this.renderTableContent()}
+          {this.renderTableContent(this.state)}
         </Table>
         //TODO Commonize Modal
         <Modal isOpen={this.state.conf_modal} toggle={this.conf_toggle} className={this.props.className}>
