@@ -7,6 +7,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'reactstrap';
+import FlipMove from 'react-flip-move'
 import ReactMarkdown from 'react-markdown'
 import PropTypes from "prop-types"
 import '../styles/component/leaderboard.css'
@@ -92,8 +93,23 @@ class Leaderboard extends React.Component {
   }
   renderRow(k, info) {
     const source = info.detail
-    return (
-      <tr key={k}>
+    return (Number(k) % 2 === 0
+      ? <FlipMove key={info.id} className="oddRow" typeName={'tr'} duration={1000} enterAnimation="elevator" leaveAnimation="elevator" easing='ease-out'>
+          <th scope="row">{k}</th>
+          <td>
+            {info.model}
+          </td>
+          <td>{info.accuracy}</td>
+          <td>{info.precision}</td>
+          <td>{info.recall}</td>
+          <td>{info.f1}</td>
+          <td>{info.auc}</td>
+          <td onClick={(event) => this.conf_toggle_open(event, info.id)} className='link-color'>confusion matrix</td>
+          <td className='link-color2' onClick={(event) => this.detail_toggle(event, source)}>
+            <Button outline color="primary" className={'detail-button'}>{info.version}</Button>
+          </td>
+        </FlipMove>
+      : <FlipMove key={info.id} typeName={'tr'} duration={1000} enterAnimation="elevator" leaveAnimation="elevator" easing='ease-out'>
         <th scope="row">{k}</th>
         <td>
           {info.model}
@@ -107,8 +123,7 @@ class Leaderboard extends React.Component {
         <td className='link-color2' onClick={(event) => this.detail_toggle(event, source)}>
           <Button outline color="primary" className={'detail-button'}>{info.version}</Button>
         </td>
-      </tr>
-    )
+      </FlipMove>)
   }
   renderConfMatrix() {
     let headerList = []
@@ -159,21 +174,19 @@ class Leaderboard extends React.Component {
   renderArrow(position, sortState, asc) {
     return (position === sortState
       ? asc
-        ? <p>{position}
-            <button className="sortbutton" onClick={(event) => this.descSort(event, position)}>
+        ? <button className="sortbutton" onClick={(event) => this.descSort(event, position)}>
+            <p>{position}
               <i className="fa fa-fw fa-angle-up"></i>
-            </button>
-          </p>
-        : <p>{position}
-            <button className="sortbutton" onClick={(event) => this.ascSort(event, position)}>
+            </p>
+          </button>
+        : <button className="sortbutton" onClick={(event) => this.ascSort(event, position)}>
+            <p>{position}
               <i className="fa fa-fw fa-angle-down"></i>
-            </button>
-          </p>
-      : <p>{position}
-        <button className="sortbutton" onClick={(event) => this.ascSort(event, position)}>
-          <i className="fa fa-fw fa-angle-down"></i>
-        </button>
-      </p>)
+            </p>
+          </button>
+      : <button className="sortbutton" onClick={(event) => this.ascSort(event, position)}>
+        <p>{position}</p>
+      </button>)
   }
   render() {
     return (
@@ -199,7 +212,7 @@ class Leaderboard extends React.Component {
           </thead>
           {this.renderTableContent(this.state)}
         </Table>
-        //TODO Commonize Modal
+        //TODOCommonize Modal
         <Modal isOpen={this.state.conf_modal} toggle={this.conf_toggle} className={this.props.className}>
           <ModalHeader toggle={this.conf_toggle}>Confusion Matrix</ModalHeader>
           <ModalBody>

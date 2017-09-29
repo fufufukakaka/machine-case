@@ -1,3 +1,7 @@
+th p{
+  margin-bottom:0!important;
+}
+
 .board{
   color:white;
   margin-top: 2em;
@@ -47,4 +51,8 @@
   background-color: transparent;
   padding:0;
   outline:none!important;
+}
+
+.oddRow{
+  background-color: darkslategray;
 }

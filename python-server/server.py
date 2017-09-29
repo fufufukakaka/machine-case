@@ -53,6 +53,31 @@ class database:
             res = False
         return res
 
+    def delete_submission(cursor,submission_id):
+        leaderboard_sql = 'delete from leaderboard where id = ?'
+        detail_sql = 'delete from model_detail where submission_id = ?'
+        matrix_sql = 'delete from confusion_matrix where submission_id = ?'
+        res1 = True
+        res2 = True
+        res3 = True
+        try:
+            cursor.execute(leaderboard_sql,[submission_id])
+        except:
+            res1 = False
+        try:
+            cursor.execute(detail_sql,[submission_id])
+        except:
+            res2 = False
+        try:
+            cursor.execute(matrix_sql,[submission_id])
+        except:
+            res3 = False
+        if res1 and res2 and res3:
+            res = True
+        else:
+            res = False
+        return res
+
     def update_conf(cursor,confusion_matrix,submission_id):
         insert_sql = 'insert into confusion_matrix (submission_id,row_class,column_class,value) values (?,?,?,?)'
         res = True
@@ -170,6 +195,22 @@ def return_matrix():
     response.status_code = 200
     conn.close()
     return response
+
+@app.route('/machine-case/delete/id',methods=['POST'])
+def delete_one_id():
+    conn,cursor = database.get_connection()
+    data = request.get_json()
+    target_id = data['target_id']
+    res = database.delete_submission(cursor,target_id)
+    if res:
+        conn.commit()
+        conn.close()
+        message="delete completed"
+    else:
+        conn.rollback()
+        conn.close()
+        message="delete failed"
+    return message
 
 @app.route('/machine-case/update',methods=['POST'])
 def update_table():
