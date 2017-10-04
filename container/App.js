@@ -2,6 +2,7 @@ import {connect} from 'react-redux'
 import React from "react"
 import Leaderboard from "../component/leaderboard"
 import Targetselect from "../component/Targetselect"
+import DeleteSection from "../component/DeleteSection"
 import 'bootstrap/dist/css/bootstrap.css'
 import "../styles/container/style.css"
 import PropTypes from "prop-types"

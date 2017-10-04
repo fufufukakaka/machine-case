@@ -6,3 +6,5 @@ node_modules/
 python-server/static/bundle\.js
 
 python-server/database/database\.db-journal
+
+python-server/database/database\.db

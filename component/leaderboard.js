@@ -97,7 +97,7 @@ class Leaderboard extends React.Component {
       ? <FlipMove key={info.id} className="oddRow" typeName={'tr'} duration={1000} enterAnimation="elevator" leaveAnimation="elevator" easing='ease-out'>
           <th scope="row">{k}</th>
           <td>
-            {info.model}
+            {info.model}[{info.id}]
           </td>
           <td>{info.accuracy}</td>
           <td>{info.precision}</td>
@@ -112,7 +112,7 @@ class Leaderboard extends React.Component {
       : <FlipMove key={info.id} typeName={'tr'} duration={1000} enterAnimation="elevator" leaveAnimation="elevator" easing='ease-out'>
         <th scope="row">{k}</th>
         <td>
-          {info.model}
+          {info.model}[{info.id}]
         </td>
         <td>{info.accuracy}</td>
         <td>{info.precision}</td>
@@ -195,7 +195,7 @@ class Leaderboard extends React.Component {
           <thead className='board-head'>
             <tr>
               <th>rank</th>
-              <th>Model Name</th>
+              <th>Model Name[submission_id]</th>
               <th>{this.renderArrow("accuracy", this.state.sort, this.state.asc)}
               </th>
               <th>{this.renderArrow("precision", this.state.sort, this.state.asc)}
