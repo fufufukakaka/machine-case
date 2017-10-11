@@ -210,7 +210,9 @@ def delete_one_id():
         conn.rollback()
         conn.close()
         message="delete failed"
-    return message
+    response = jsonify(message=message)
+    response.status_code = 200
+    return response
 
 @app.route('/machine-case/update',methods=['POST'])
 def update_table():

@@ -7,13 +7,18 @@ import {
   changeSub,
   changeMain,
   fetchConfusionMatrix,
-  displayConfusionMatrix
+  displayConfusionMatrix,
+  sendDelete,
+  completeDelete
 } from "../actions/leaderboard"
 
 const initial = {
   leaderboard: {
     isFetching: false,
     isComplete:false,
+    isDeleting: false,
+    isCompleteDelete:false,
+    deleteMessage:"none",
     data: {},
     subTargetList:[],
     mainTargetList:[],
@@ -61,6 +66,15 @@ const leaderboard = createReducer({
   [displayConfusionMatrix]: (state,payload) => Object.assign({}, state, {
     class_array: payload.class_array,
     value_array: payload.value_array
+  }),
+  [sendDelete]: (state,payload) => Object.assign({}, state, {
+    isDeleting: true,
+    isCompleteDelete: false
+  }),
+  [completeDelete]: (state,payload) => Object.assign({}, state, {
+    isDeleting: false,
+    isCompleteDelete: true,
+    deleteMessage:payload.message
   })
 }, initial.leaderboard)
 

@@ -7,7 +7,9 @@ import {
   displayInitRequest,
   changeMain,
   fetchConfusionMatrix,
-  displayConfusionMatrix
+  displayConfusionMatrix,
+  sendDelete,
+  completeDelete
 } from "../actions/leaderboard"
 
 export function* handleFetchInitRequest() {
@@ -45,5 +47,18 @@ export function* handleFetchConfusionMatrix() {
     }
   )
     yield put(displayConfusionMatrix(Object.assign({}, payload)))
+    }
+}
+
+export function* handleSendDelete() {
+  while (true) {
+    const action = yield take([`${sendDelete}`])
+      const { payload} = yield call(superFetch, {
+        url: "machine-case/delete/id",
+        type: "POST",
+        data: action.payload
+    }
+  )
+    yield put(completeDelete(Object.assign({}, payload)))
     }
 }
