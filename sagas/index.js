@@ -5,4 +5,5 @@ export default function* rootSaga() {
   yield fork(leaderboard.handleFetchRequest)
   yield fork(leaderboard.handleFetchInitRequest)
   yield fork(leaderboard.handleFetchConfusionMatrix)
+  yield fork(leaderboard.handleSendDelete)
 }
